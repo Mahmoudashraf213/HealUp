@@ -14,3 +14,16 @@ export const addMedicineVal =  joi.object({
     prescriptionRequired: generalFields.prescriptionRequired.required(),
   });
   
+  export const updateMedicineVal = joi.object({
+    medicineId: generalFields.objectId.required(),
+    name: generalFields.name.optional(),
+    brand: generalFields.brand.optional(),
+    category: generalFields.category.optional(),
+    price: generalFields.price.optional(),
+    stock: generalFields.stock.optional(),
+    expiryDate: generalFields.expiryDate.optional(),
+    manufacturer: generalFields.manufacturer.optional(),
+    batchNumber: generalFields.batchNumber.optional(),
+    dosage: generalFields.dosage.optional(),
+    prescriptionRequired: generalFields.prescriptionRequired.optional(),
+  })
