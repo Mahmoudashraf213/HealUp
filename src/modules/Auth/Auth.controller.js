@@ -4,7 +4,7 @@ import { AppError } from "../../utils/appError.js";
 import { messages } from "../../utils/constant/messages.js";
 import { genreateToken, verifyToken } from '../../utils/token.js';
 import { roles } from '../../utils/constant/enums.js';
-import { sendEmail } from '../../utils/email.js';
+import { sendEmail } from '../../utils/sendEmail.js';
 
 // sign up 
 export const signup = async (req, res, next) => {
