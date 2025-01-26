@@ -1,4 +1,4 @@
-import { MedicineRouter } from "./modules/index.js";
+import { authRouter, MedicineRouter } from "./modules/index.js";
 import { globalErrorHandling } from "./utils/appError.js";
 
 
@@ -6,9 +6,10 @@ export const bootStrap = (app, express) => {
     // parse req
     app.use(express.json());
 
- // routing
- app.use("/Medicine", MedicineRouter);
+    // routing
+    app.use("/Medicine", MedicineRouter);
+    app.use("/auth", authRouter);
 
- // global error
- app.use(globalErrorHandling);
+    // global error
+    app.use(globalErrorHandling);
 }

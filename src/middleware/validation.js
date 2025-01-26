@@ -14,6 +14,10 @@ export const generalFields = {
     batchNumber: joi.string(),
     dosage: joi.string(),
     prescriptionRequired: joi.boolean(),
+    phoneNumber: joi.string().pattern(new RegExp(/^01[0-2,5]{1}[0-9]{8}$/)),
+    password: joi.string().pattern(new RegExp(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/)),
+    confirmPassword: joi.string().valid(joi.ref('password')),
+    email: joi.string().email(),
 }
 
 
