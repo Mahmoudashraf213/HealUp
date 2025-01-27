@@ -29,7 +29,7 @@ export const addMedicine = async (req, res, next) => {
         batchNumber,
         dosage,
         prescriptionRequired,
-        // createdBy: req.authUser._id,
+        createdBy: req.authUser._id,
     });
 
     // save the new medicine
