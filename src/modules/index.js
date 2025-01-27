@@ -1,2 +1,3 @@
 import MedicineRouter from "./Medicine/Medicine.router.js";
-export { MedicineRouter };
+import authRouter from "./Auth/Auth.router.js";
+export { MedicineRouter, authRouter };
