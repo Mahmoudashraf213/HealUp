@@ -3,6 +3,9 @@ import { isValid } from "../../middleware/validation.js";
 import { addMedicineVal, deleteMedicineByIdVal,  deleteMedicineByNameBrandVal,  getAllMedicineVal, getMedicineVal, updateMedicineVal } from "./Medicine.validation.js";
 import { asyncHandler } from "../../middleware/asyncHandler.js";
 import { addMedicine, deleteMedicineById, deleteMedicineByNameOrBrand, getAllMedicines, getSpecificMedicine, updateMedicine } from "./Medicine.controller.js";
+import { isAuthenticated } from "../../middleware/authentication.js";
+import { isAuthorized } from "../../middleware/autheraization.js";
+import { roles } from "../../utils/constant/enums.js";
 
 
 
@@ -10,28 +13,34 @@ const MedicineRouter = Router();
 
 // add medicine
 MedicineRouter.post('/',
-isValid(addMedicineVal),
-asyncHandler(addMedicine)
-  // todo Authenticated , Authorized , role ;
+  isAuthenticated(),
+  isAuthorized([roles.ADMIN ]),  
+  isValid(addMedicineVal),
+  asyncHandler(addMedicine)
+
 )
  
 
 // update medicine
 MedicineRouter.put('/:medicineId',
+  isAuthenticated(),
+  isAuthorized([roles.ADMIN ]),  
   isValid (updateMedicineVal),
- asyncHandler(updateMedicine)
-   // todo Authenticated , Authorized , role ;
+  asyncHandler(updateMedicine)
 )  
 
 // get specific medicine
 MedicineRouter.get('/:medicineId',
-   isValid (getMedicineVal),
-   asyncHandler(getSpecificMedicine)
-    // todo Authenticated , Authorized , role ;
+  isAuthenticated(),
+  isAuthorized([roles.ADMIN , roles.USER]),  
+  isValid (getMedicineVal),
+  asyncHandler(getSpecificMedicine)
 )
 
 // get all medicine
-MedicineRouter.get('/', 
+MedicineRouter.get('/',
+  isAuthenticated(),
+  isAuthorized([roles.ADMIN , roles.USER]),   
   isValid (getAllMedicineVal),
   asyncHandler (getAllMedicines),
   // todo Authenticated , Authorized , role ;
@@ -39,6 +48,8 @@ MedicineRouter.get('/',
 
 // delete medicine by id 
 MedicineRouter.delete('/:medicineId',
+  isAuthenticated(),
+  isAuthorized([roles.ADMIN ]),  
   isValid (deleteMedicineByIdVal),
   asyncHandler (deleteMedicineById)
   // todo Authenticated , Authorized , role ;
@@ -46,6 +57,8 @@ MedicineRouter.delete('/:medicineId',
 
 // delete medicine by name , brand
 MedicineRouter.delete('/',
+  isAuthenticated(),
+  isAuthorized([roles.ADMIN ]),  
   isValid (deleteMedicineByNameBrandVal) ,
   asyncHandler (deleteMedicineByNameOrBrand),
   // todo Authenticated , Authorized , role ;
