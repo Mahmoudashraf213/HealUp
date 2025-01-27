@@ -1,8 +1,8 @@
 import { Router } from "express";
 import { isValid } from "../../middleware/validation.js";
-import { addMedicineVal, deleteMedicineByIdVal,  deleteMedicineByNameBrandVal,  getAllMedicineVal, getMedicineVal, updateMedicineVal } from "./Medicine.validation.js";
+import { addMedicineVal, deleteMedicineByIdVal,   getAllMedicineVal, getMedicineVal, updateMedicineVal } from "./Medicine.validation.js";
 import { asyncHandler } from "../../middleware/asyncHandler.js";
-import { addMedicine, deleteMedicineById, deleteMedicineByNameOrBrand, getAllMedicines, getSpecificMedicine, updateMedicine } from "./Medicine.controller.js";
+import { addMedicine, deleteMedicineById,  getAllMedicines, getSpecificMedicine, updateMedicine } from "./Medicine.controller.js";
 import { isAuthenticated } from "../../middleware/authentication.js";
 import { isAuthorized } from "../../middleware/autheraization.js";
 import { roles } from "../../utils/constant/enums.js";
@@ -55,13 +55,6 @@ MedicineRouter.delete('/:medicineId',
   // todo Authenticated , Authorized , role ;
 )
 
-// delete medicine by name , brand
-MedicineRouter.delete('/',
-  isAuthenticated(),
-  isAuthorized([roles.ADMIN ]),  
-  isValid (deleteMedicineByNameBrandVal) ,
-  asyncHandler (deleteMedicineByNameOrBrand),
-  // todo Authenticated , Authorized , role ;
-)
+
 
 export default MedicineRouter;
