@@ -28,6 +28,20 @@ const generateMessage = (entity) => ({
       noAccountsFound: "no accounts found",
       otpSent: "OTP sent successfully",
     },
-    medicine: generateMessage("medicine"),
+    medicine: {
+      ...generateMessage("medicine"),
+      noNameMatch: (name) => `No medicines found with the name "${name}".`,
+      noBrandMatch: (brand) => `No medicines found with the brand "${brand}".`,
+      noCategoryMatch: (category) => `No medicines found in the category "${category}".`,
+      noPriceMatch: `No medicines found within the price range.`,
+      noStockMatch: `No medicines found within the stock range.`,
+      noExpiryDateMatch: (expiryDate) => `No medicines found expiring on or before "${expiryDate}".`,
+      noManufacturerMatch: (manufacturer) => `No medicines found from the manufacturer "${manufacturer}".`,
+      noBatchNumberMatch: (batchNumber) => `No medicines found with the batch number "${batchNumber}".`,
+      noDosageMatch: (dosage) => `No medicines found with the dosage "${dosage}".`,
+      noPrescriptionRequiredMatch: (prescriptionRequired) => `No medicines found with prescription required status "${prescriptionRequired}".`,
+      noFilterProvided: `You must provide at least one of id, name, or brand.`,
+      noIdProvided: `You must provide a medicine ID.`,
+  },
   };
   

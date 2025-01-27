@@ -2,7 +2,6 @@
 import joi from 'joi';
 import { AppError } from '../utils/appError.js';
 
-
 export const generalFields = {
     name: joi.string(),
     brand: joi.string(),
@@ -18,19 +17,17 @@ export const generalFields = {
     password: joi.string().pattern(new RegExp(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/)),
     confirmPassword: joi.string().valid(joi.ref('password')),
     email: joi.string().email(),
-}
-
-
-
+    objectId: joi.string().hex().length(24), 
+};
 
 export const isValid = (schema) => {
     return (req, res, next) => {
-        let data = { ...req.body, ...req.params, ...req.query }
-        const { error } = schema.validate(data, { abortEarly: false })
+        let data = { ...req.body, ...req.params, ...req.query };
+        const { error } = schema.validate(data, { abortEarly: false });
         if (error) {
-            const errorMessage = error.details.map(detail => detail.message).join(', ');
+            const errorMessage = error.details.map((detail) => detail.message).join(', ');
             return next(new AppError(errorMessage, 400));
         }
-        next()
-    }
-}
+        next();
+    };
+};
