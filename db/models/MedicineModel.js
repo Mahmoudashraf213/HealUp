@@ -43,7 +43,11 @@ const medicineSchema = new Schema(
       type: Boolean,
       default: false,
     },
-  },
+  //  createdBy: {
+  //     type: Types.ObjectId,
+  //     required: true
+  // }
+},
   { timestamps: true }
 );
 

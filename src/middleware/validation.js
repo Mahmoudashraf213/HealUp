@@ -14,6 +14,7 @@ export const generalFields = {
     batchNumber: joi.string(),
     dosage: joi.string(),
     prescriptionRequired: joi.boolean(),
+    objectId: joi.string().hex().length(24),
 }
 
 
