@@ -168,3 +168,47 @@ export const getOrder = async (req, res, next) => {
     data: order,
   });
 };
+
+// Get all orders with advanced filters
+export const getAllOrders = async (req, res, next) => {
+  // Fetch all orders from the database and populate related fields
+  const orders = await Order.find()
+    .populate("customer", "firstName lastName email")
+    .populate("medicines.medicineId", "name brand category price");
+
+  // Check if no orders exist
+  if (!orders.length) {
+    return next(new AppError(messages.order.notFound, 404));
+  }
+
+  // Return the orders in the response
+  res.status(200).json({
+    message: messages.order.getAllSuccessfully,
+    success: true,
+    length: orders.length,
+    data: orders,
+  });
+};
+
+// Delete an order 
+export const deleteOrder = async (req, res, next) => {
+  const { orderId } = req.params;
+
+  // Ensure orderId is provided
+  if (!orderId) {
+    return next(new AppError(messages.order.noIdProvided, 400));
+  }
+
+  // Find and delete the order by ID
+  const deletedOrder = await Order.findByIdAndDelete(orderId);
+
+  // Handle if no order is found
+  if (!deletedOrder) {
+    return next(new AppError(messages.order.notExist, 404));
+  }
+
+  res.status(200).json({
+    success: true,
+    message: messages.order.deleted,
+  });
+};

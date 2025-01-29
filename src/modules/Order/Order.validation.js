@@ -26,3 +26,7 @@ export const updateOrderVal = joi.object({
 export const getOrderVal = joi.object({
     orderId : generalFields.objectId.required(),
 })
+
+export const deleteOrderVal = joi.object({
+    orderId : generalFields.objectId.required(),
+})
