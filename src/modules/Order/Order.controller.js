@@ -83,3 +83,88 @@ export const addOrder = async (req, res, next) => {
       data: newOrder,
     });
 };
+
+
+// update order
+export const updateOrder = async (req, res, next) => {
+  const { orderId } = req.params;
+  let {
+    medicines,
+    status,
+    paymentMethod,
+    isPaid,
+    shippingAddress,
+  } = req.body;
+
+  // Check if the order exists
+  const orderExist = await Order.findById(orderId);
+  if (!orderExist) {
+    return next(new AppError(messages.order.notExist, 404)); 
+  }
+
+  // If medicines are provided, update them and calculate total price
+  if (medicines) {
+    // Calculate total price
+    let calculatedTotalPrice = 0;
+
+    // Iterate through medicines to calculate total price
+    for (let medicine of medicines) {
+      // Get medicine details from the database using medicineId
+      const medicineDetails = await Medicine.findById(medicine.medicineId); // Fetching the medicine details
+      if (!medicineDetails) {
+        return next(new AppError(messages.medicine.notFound, 404)); 
+      }
+
+      const medicinePrice = medicineDetails.price; // Assuming price is in the Medicine model
+      if (!medicinePrice) {
+        return next(new AppError(messages.medicine.priceNotFound, 400)); 
+      }
+
+      // Calculate the total price for the medicine based on quantity
+      calculatedTotalPrice += medicinePrice * medicine.quantity;
+    }
+
+    // Update the medicines in the order
+    orderExist.medicines = medicines;
+    // Set the calculated total price
+    orderExist.totalPrice = calculatedTotalPrice;
+  }
+
+  // Update other fields if provided
+  if (status) orderExist.status = status;
+  if (paymentMethod) orderExist.paymentMethod = paymentMethod;
+  if (typeof isPaid !== "undefined") orderExist.isPaid = isPaid;
+  if (shippingAddress) orderExist.shippingAddress = shippingAddress;
+
+  // Save the updated order
+  const orderUpdated = await orderExist.save();
+  if (!orderUpdated) {
+    return next(new AppError(messages.order.failToUpdate, 500)); 
+  }
+
+  // Send response with the updated order
+  return res.status(200).json({
+    message: messages.order.updated,
+    success: true,
+    data: orderUpdated,
+  });
+};
+
+
+// get specific order
+export const getOrder = async (req, res, next) => {
+  const { orderId } = req.params;
+
+  // Find the order by ID
+  const order = await Order.findById(orderId);
+  if (!order) {
+    return next(new AppError(messages.order.notExist, 404));
+  }
+
+  // Return the order data
+  return res.status(200).json({
+    message: messages.order.fetchedSuccessfully,
+    success: true,
+    data: order,
+  });
+};

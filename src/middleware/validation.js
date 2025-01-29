@@ -26,11 +26,12 @@ export const generalFields = {
         quantity: joi.number().integer().positive().required(),
         price: joi.number().positive(),
       })
-    ).min(1).required(),
+    )
+    .min(1).required(),
     totalPrice: joi.number().positive(),
     status: joi.string().valid(...Object.values(orderStatuses)).default(orderStatuses.PENDING),
     paymentMethod: joi.string().valid(...Object.values(paymentMethods)),
-    isPaid: joi.boolean().default(false),
+    isPaid: joi.boolean(),
     shippingAddress: joi.object({
         fullName: joi.string().required(),
         phone: joi.string().required(),
