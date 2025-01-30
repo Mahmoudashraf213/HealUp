@@ -15,9 +15,13 @@ export const generalFields = {
     prescriptionRequired: joi.boolean(),
     phoneNumber: joi.string().pattern(new RegExp(/^01[0-2,5]{1}[0-9]{8}$/)),
     password: joi.string().pattern(new RegExp(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/)),
-    confirmPassword: joi.string().valid(joi.ref('password')),
+    confirmPassword: joi.alternatives().try(
+        joi.ref("password"),
+        joi.ref("newPassword")
+    ),
     email: joi.string().email(),
-    objectId: joi.string().hex().length(24), 
+    objectId: joi.string().hex().length(24),
+    otp: joi.string().length(6),
 };
 
 export const isValid = (schema) => {
