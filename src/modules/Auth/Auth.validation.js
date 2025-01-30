@@ -13,7 +13,27 @@ export const signupVal = joi.object({
 
 // loginVal 
 export const loginVal = joi.object({
-    email: generalFields.email.required(),
-    phoneNumber: generalFields.phoneNumber.required(),
+    email: generalFields.email.when('phoneNumber', {
+        is: joi.exist(),
+        then: joi.optional(),
+        otherwise: joi.required()
+    }), phoneNumber: generalFields.phoneNumber,
     password: generalFields.password.required()
+})
+
+// forgetPasswordVal
+export const forgetPasswordVal = joi.object({
+    email: generalFields.email.when('phoneNumber', {
+        is: joi.exist(),
+        then: joi.optional(),
+        otherwise: joi.required()
+    }), phoneNumber: generalFields.phoneNumber,
+})
+
+// rest password
+export const resetPasswordVal = joi.object({
+    email: generalFields.email.required(),
+    otp: generalFields.otp.required(),
+    newPassword: generalFields.password.required(),
+    confirmPassword: generalFields.confirmPassword.required()
 })

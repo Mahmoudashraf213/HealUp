@@ -31,7 +31,7 @@ const userSchema = new Schema({
         default: false
     },
     otp: String,
-    otpExpiresAt: Date
+    otpExpires: String
 }, { timestamps: true })
 
 // model 

@@ -16,16 +16,20 @@ export const generalFields = {
     prescriptionRequired: joi.boolean(),
     phoneNumber: joi.string().pattern(new RegExp(/^01[0-2,5]{1}[0-9]{8}$/)),
     password: joi.string().pattern(new RegExp(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/)),
-    confirmPassword: joi.string().valid(joi.ref('password')),
+    confirmPassword: joi.alternatives().try(
+        joi.ref("password"),
+        joi.ref("newPassword")
+    ),
     email: joi.string().email(),
     objectId: joi.string().hex().length(24),
+    otp: joi.string().length(6),
     customer: joi.string().hex().length(24),
     medicines: joi.array().items(
-      joi.object({
-        medicineId: joi.string().pattern(new RegExp(/^[a-fA-F0-9]{24}$/)).required(),
-        quantity: joi.number().integer().positive().required(),
-        price: joi.number().positive(),
-      })
+        joi.object({
+            medicineId: joi.string().pattern(new RegExp(/^[a-fA-F0-9]{24}$/)).required(),
+            quantity: joi.number().integer().positive().required(),
+            price: joi.number().positive(),
+        })
     )
     .min(1).required(),
     totalPrice: joi.number().positive(),
@@ -39,7 +43,7 @@ export const generalFields = {
         city: joi.string(),
         postalCode: joi.string(),
         country: joi.string(),
-      }).required(),
+    }).required(),
 };
 
 export const isValid = (schema) => {
