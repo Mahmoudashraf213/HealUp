@@ -27,10 +27,11 @@ export const messages = {
     failToUpdatePassword: "failed to update password",
     noAccountsFound: "no accounts found",
     otpSent: "OTP sent successfully",
-    cannotDeletAdmin: "Cannot delete an admin account!"
+    cannotDeletAdmin: "Cannot delete an admin account!",
   },
   medicine: {
     ...generateMessage("medicine"),
+    notFound: "medicine not found",
     noNameMatch: (name) => `No medicines found with the name "${name}".`,
     noBrandMatch: (brand) => `No medicines found with the brand "${brand}".`,
     noCategoryMatch: (category) => `No medicines found in the category "${category}".`,
@@ -43,5 +44,13 @@ export const messages = {
     noPrescriptionRequiredMatch: (prescriptionRequired) => `No medicines found with prescription required status "${prescriptionRequired}".`,
     noFilterProvided: `You must provide at least one of id, name, or brand.`,
     noIdProvided: `You must provide a medicine ID.`,
+  },
+  order: {
+    ...generateMessage("order"),
+    noMedicines: "No medicines provided in the order.",
+    missingPaymentMethod: "Payment method is missing.",
+    missingShippingDetails: "Shipping details are missing.",
+    invalidMedicineDetails: "Invalid medicine details provided.",
+    insufficientStock: "Insufficient stock for one or more medicines.",
   },
 };

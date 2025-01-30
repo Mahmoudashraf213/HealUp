@@ -44,7 +44,8 @@ const medicineSchema = new Schema(
       default: false,
     },
    createdBy: {
-      type: Types.ObjectId,
+      type: Types.ObjectId, 
+      ref: "User",
       required: true
   }
 },
