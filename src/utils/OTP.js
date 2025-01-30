@@ -1,6 +1,7 @@
 import { customAlphabet } from "nanoid";
 import { sendSms } from "./sendSms.js";
-import { sendEmail } from "./email.js";
+import { sendEmail } from "./sendEmail.js";
+
 
 // Generate a random 6-digit OTP
 export const generateOTP = customAlphabet("0123456789", 6);
