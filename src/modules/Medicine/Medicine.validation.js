@@ -59,8 +59,3 @@ export const addMedicineVal =  joi.object({
     brand: generalFields.brand.optional(),
   })
 
-  // delete medicine by name , brand
-  export const deleteMedicineByNameBrandVal = joi.object({
-    name: generalFields.name.optional(), 
-    brand: generalFields.brand.optional(),
-  })

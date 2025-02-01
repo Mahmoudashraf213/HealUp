@@ -1,6 +1,5 @@
-import { adminRouter, authRouter, MedicineRouter } from "./modules/index.js";
+import { adminRouter, authRouter, MedicineRouter, OrderRouter } from "./modules/index.js";
 import { globalErrorHandling } from "./utils/appError.js";
-
 
 export const bootStrap = (app, express) => {
     // parse req
@@ -9,8 +8,9 @@ export const bootStrap = (app, express) => {
     // routing
     app.use("/Medicine", MedicineRouter);
     app.use("/auth", authRouter);
-    app.use("/admin", adminRouter)
+    app.use("/admin", adminRouter);
+    app.use("/order", OrderRouter);
 
     // global error
     app.use(globalErrorHandling);
-}
+};
