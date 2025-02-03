@@ -31,16 +31,12 @@ MedicineRouter.put('/:medicineId',
 
 // get specific medicine
 MedicineRouter.get('/:medicineId',
-  isAuthenticated(),
-  isAuthorized([roles.ADMIN , roles.USER]),  
   isValid (getMedicineVal),
   asyncHandler(getSpecificMedicine)
 )
 
 // get all medicine
 MedicineRouter.get('/',
-  isAuthenticated(),
-  isAuthorized([roles.ADMIN , roles.USER]),   
   isValid (getAllMedicineVal),
   asyncHandler (getAllMedicines),
   // todo Authenticated , Authorized , role ;
