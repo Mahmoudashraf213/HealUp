@@ -14,7 +14,7 @@ export const bootStrap = (app, express) => {
     app.use(cors(corsOptions));
 
     // routing
-    app.use("/Medicine", MedicineRouter);
+    app.use("/medicine", MedicineRouter);
     app.use("/auth", authRouter);
     app.use("/admin", adminRouter);
     app.use("/order", OrderRouter);
