@@ -6,6 +6,7 @@ import { addMedicine, deleteMedicineById,  getAllMedicines, getSpecificMedicine,
 import { isAuthenticated } from "../../middleware/authentication.js";
 import { isAuthorized } from "../../middleware/autheraization.js";
 import { roles } from "../../utils/constant/enums.js";
+import { cloudUploads } from "../../utils/multer-cloud.js";
 
 
 
@@ -15,6 +16,7 @@ const MedicineRouter = Router();
 MedicineRouter.post('/',
   isAuthenticated(),
   isAuthorized([roles.ADMIN ]),  
+  cloudUploads({}).fields([{ name: 'Image', maxCount: 1 }]),
   isValid(addMedicineVal),
   asyncHandler(addMedicine)
 
@@ -25,6 +27,7 @@ MedicineRouter.post('/',
 MedicineRouter.put('/:medicineId',
   isAuthenticated(),
   isAuthorized([roles.ADMIN ]),  
+  cloudUploads({}).fields([{ name: 'Image', maxCount: 1 }]),
   isValid (updateMedicineVal),
   asyncHandler(updateMedicine)
 )  

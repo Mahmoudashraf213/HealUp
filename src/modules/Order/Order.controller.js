@@ -1,5 +1,4 @@
-import { Medicine } from "../../../db/index.js";
-import { Order } from "../../../db/models/Order.Model.js";
+import { Medicine, Order } from "../../../db/index.js";
 import { AppError } from "../../utils/appError.js";
 import { messages } from "../../utils/constant/messages.js";
 

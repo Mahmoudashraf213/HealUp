@@ -43,6 +43,15 @@ const medicineSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    description: {
+      type: String,
+      required: true,
+      trim: true, 
+    },
+    Image: {
+      secure_url: { type: String, required: true },
+      public_id: { type : String, required: true },
+    },
    createdBy: {
       type: Types.ObjectId, 
       ref: "User",
