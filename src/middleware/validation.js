@@ -44,6 +44,7 @@ export const generalFields = {
         postalCode: joi.string(),
         country: joi.string(),
     }).required(),
+    description: joi.string().required(),
 };
 
 export const isValid = (schema) => {

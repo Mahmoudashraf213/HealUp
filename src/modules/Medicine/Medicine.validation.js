@@ -12,6 +12,7 @@ export const addMedicineVal =  joi.object({
     batchNumber: generalFields.batchNumber.required(),
     dosage: generalFields.dosage.required(),
     prescriptionRequired: generalFields.prescriptionRequired.required(),
+    description: generalFields.description,
   });
   
   export const updateMedicineVal = joi.object({
@@ -26,6 +27,7 @@ export const addMedicineVal =  joi.object({
     batchNumber: generalFields.batchNumber.optional(),
     dosage: generalFields.dosage.optional(),
     prescriptionRequired: generalFields.prescriptionRequired.optional(),
+    description: generalFields.description.optional(),
   })
 
   // get specific medicine
