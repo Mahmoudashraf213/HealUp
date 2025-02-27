@@ -13,7 +13,7 @@ const OrderRouter = Router();
 // add order
 OrderRouter.post('/',
     isAuthenticated(),
-    isAuthorized([roles.ADMIN]),
+    isAuthorized([roles.ADMIN , roles.USER]),
     isValid(addOrderVal),
     asyncHandler(addOrder)
 )
