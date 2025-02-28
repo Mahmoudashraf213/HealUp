@@ -43,7 +43,7 @@ export const messages = {
     noDosageMatch: (dosage) => `No medicines found with the dosage "${dosage}".`,
     noPrescriptionRequiredMatch: (prescriptionRequired) => `No medicines found with prescription required status "${prescriptionRequired}".`,
     noFilterProvided: `You must provide at least one of id, name, or brand.`,
-    noIdProvided: `You must provide a medicine ID.`,
+    noIdProvided: `You must provide a medicine ID.`,  
   },
   order: {
     ...generateMessage("order"),
@@ -53,4 +53,11 @@ export const messages = {
     invalidMedicineDetails: "Invalid medicine details provided.",
     insufficientStock: "Insufficient stock for one or more medicines.",
   },
+  cart:{
+    ...generateMessage("cart"),
+    failToAddToCart: "Failed to add medicine to cart",
+    medicineRemoved: "Medicine removed from cart successfully",
+    addedToCart: "Medicine added to cart successfully",
+    stockNotEnough: "stock is not enough",
+  }
 };

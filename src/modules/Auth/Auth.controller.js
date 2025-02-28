@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import { User } from "../../../db/index.js";
+import { Cart, User } from "../../../db/index.js";
 import { AppError } from "../../utils/appError.js";
 import { messages } from "../../utils/constant/messages.js";
 import { genreateToken, verifyToken } from '../../utils/token.js';
@@ -79,6 +79,8 @@ export const verifyAccount = async (req, res, next) => {
     if (!updatedUser) {
         return next(new AppError(messages.user.notExist, 404));
     }
+    // create card 
+    await Cart.create({ user: payload._id, products: [] })
 
     // Send success response
     return res.status(200).json({ message: messages.user.verified, success: true });

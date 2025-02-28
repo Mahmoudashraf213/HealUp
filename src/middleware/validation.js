@@ -45,6 +45,7 @@ export const generalFields = {
         country: joi.string(),
     }).required(),
     description: joi.string().required(),
+    quantity: joi.number().positive(),
 };
 
 export const isValid = (schema) => {
