@@ -4,83 +4,72 @@ import { messages } from "../../utils/constant/messages.js";
 
 // Add a new order
 export const addOrder = async (req, res, next) => {
-    // Extract order data from the request body
-    const { medicines, paymentMethod, shippingAddress } = req.body;
-  
-    // Validate required fields 
-    if (!medicines || !Array.isArray(medicines) || medicines.length === 0) {
-      return next(new AppError(messages.order.noMedicines, 400));
+  // Extract order data from the request body
+  const { medicines, paymentMethod, shippingAddress } = req.body;
+
+  // Calculate total price and validate medicines
+  let totalPrice = 0;
+  const updatedMedicines = [];
+
+  for (const item of medicines) {
+    const { medicineId, quantity } = item;
+
+    // Ensure medicine ID and quantity are provided
+    if (!medicineId || !quantity || quantity <= 0) {
+      return next(new AppError(messages.order.invalidMedicineDetails, 400));
     }
-    if (!paymentMethod) {
-      return next(new AppError(messages.order.missingPaymentMethod, 400));
+
+    // Fetch medicine details from the database
+    const medicine = await Medicine.findById(medicineId);
+    if (!medicine) {
+      return next(new AppError(messages.medicine.notFound, 404));
     }
-    if (!shippingAddress || !shippingAddress.fullName || !shippingAddress.phone || !shippingAddress.address) {
-      return next(new AppError(messages.order.missingShippingDetails, 400));
+
+    // Ensure stock is sufficient
+    if (medicine.stock < quantity) {
+      return next(new AppError(messages.order.insufficientStock, 400));
     }
-  
-    // Calculate total price and validate medicines
-    let totalPrice = 0;
-    const updatedMedicines = []; 
-  
-    for (const item of medicines) {
-      const { medicineId, quantity } = item;
-  
-      // Ensure medicine ID and quantity are provided
-      if (!medicineId || !quantity || quantity <= 0) {
-        return next(new AppError(messages.order.invalidMedicineDetails, 400)); 
-      }
-  
-      // Fetch medicine details from the database
-      const medicine = await Medicine.findById(medicineId);
-      if (!medicine) {
-        return next(new AppError(messages.medicine.notFound, 404));
-      }
-  
-      // Ensure stock is sufficient
-      if (medicine.stock < quantity) {
-        return next(new AppError(messages.order.insufficientStock, 400));
-      }
-      // Set the createdBy field if not already set (in case the medicine is being updated)
-      medicine.createdBy = medicine.createdBy || req.authUser._id;
-      // Add medicine details for the order
-      updatedMedicines.push({
-        medicineId: medicine._id,
-        quantity,
-        price: medicine.price,
-      });
-  
-      // Add to total price
-      totalPrice += medicine.price * quantity;
-  
-      // Reduce stock
-      medicine.stock -= quantity;
-      await medicine.save();
-    }
-  
-    // Create a new order
-    const order = new Order({
-      customer: req.authUser._id,
-      medicines: updatedMedicines,
-      totalPrice,
-      paymentMethod,
-      shippingAddress,
-      createdBy: req.authUser._id, 
+    // Set the createdBy field if not already set (in case the medicine is being updated)
+    medicine.createdBy = medicine.createdBy || req.authUser._id;
+    // Add medicine details for the order
+    updatedMedicines.push({
+      medicineId: medicine._id,
+      quantity,
+      price: medicine.price,
     });
-  
-    // Save the order to the database
-    const newOrder = await order.save();
-  
-    // Handle failure
-    if (!newOrder) {
-      return next(new AppError(messages.order.failToCreate, 500));
-    }
-  
-    // Send response
-    res.status(201).json({
-      success: true,
-      message: messages.order.created,
-      data: newOrder,
-    });
+
+    // Add to total price
+    totalPrice += medicine.price * quantity;
+
+    // Reduce stock
+    medicine.stock -= quantity;
+    await medicine.save();
+  }
+
+  // Create a new order
+  const order = new Order({
+    customer: req.authUser._id,
+    medicines: updatedMedicines,
+    totalPrice,
+    paymentMethod,
+    shippingAddress,
+    createdBy: req.authUser._id,
+  });
+
+  // Save the order to the database
+  const newOrder = await order.save();
+
+  // Handle failure
+  if (!newOrder) {
+    return next(new AppError(messages.order.failToCreate, 500));
+  }
+
+  // Send response
+  res.status(201).json({
+    success: true,
+    message: messages.order.created,
+    data: newOrder,
+  });
 };
 
 
@@ -98,7 +87,7 @@ export const updateOrder = async (req, res, next) => {
   // Check if the order exists
   const orderExist = await Order.findById(orderId);
   if (!orderExist) {
-    return next(new AppError(messages.order.notExist, 404)); 
+    return next(new AppError(messages.order.notExist, 404));
   }
 
   // If medicines are provided, update them and calculate total price
@@ -111,12 +100,12 @@ export const updateOrder = async (req, res, next) => {
       // Get medicine details from the database using medicineId
       const medicineDetails = await Medicine.findById(medicine.medicineId); // Fetching the medicine details
       if (!medicineDetails) {
-        return next(new AppError(messages.medicine.notFound, 404)); 
+        return next(new AppError(messages.medicine.notFound, 404));
       }
 
       const medicinePrice = medicineDetails.price; // Assuming price is in the Medicine model
       if (!medicinePrice) {
-        return next(new AppError(messages.medicine.priceNotFound, 400)); 
+        return next(new AppError(messages.medicine.priceNotFound, 400));
       }
 
       // Calculate the total price for the medicine based on quantity
@@ -138,7 +127,7 @@ export const updateOrder = async (req, res, next) => {
   // Save the updated order
   const orderUpdated = await orderExist.save();
   if (!orderUpdated) {
-    return next(new AppError(messages.order.failToUpdate, 500)); 
+    return next(new AppError(messages.order.failToUpdate, 500));
   }
 
   // Send response with the updated order

@@ -21,7 +21,7 @@ OrderRouter.post('/',
 // update order
 OrderRouter.put('/:orderId',
     isAuthenticated(),
-    isAuthorized([roles.ADMIN , roles.USER]),
+    isAuthorized([roles.ADMIN]),
     isValid(updateOrderVal),
     asyncHandler(updateOrder)
 )
@@ -29,7 +29,7 @@ OrderRouter.put('/:orderId',
 // get specific order
 OrderRouter.get('/:orderId',
     isAuthenticated(),
-    isAuthorized([roles.ADMIN , roles.USER]),
+    isAuthorized([roles.ADMIN, roles.USER]),
     isValid(getOrderVal),
     asyncHandler(getOrder)
 )
@@ -46,7 +46,7 @@ OrderRouter.get('/',
 // delete order by id
 OrderRouter.delete('/:orderId',
     isAuthenticated(),
-    isAuthorized([roles.ADMIN , roles.USER]),
+    isAuthorized([roles.ADMIN]),
     isValid(deleteOrderVal),
     asyncHandler(deleteOrder)
 )
